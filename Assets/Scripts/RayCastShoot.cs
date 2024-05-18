@@ -102,7 +102,7 @@ public class RayCastShoot : MonoBehaviour
         }
 
         // Granadas-
-        if (Input.GetButtonDown("Fire2") && Grenades > 0){
+        if (Input.GetButtonDown("Fire2") && Grenades > 0 && expTimer == 0){
             Grenade(Aim);
             expTimer = expCooldown;
             Grenades--;
@@ -147,7 +147,7 @@ public class RayCastShoot : MonoBehaviour
         Destroy(bulletVisual, 0.025f);
     }
 
-    void Grenade(Vector3 apunta)
+    /*void Grenade(Vector3 apunta)
     {
         // Instantiate grenade prefab at current position with appropriate rotation
         Vector3 where = transform.position;
@@ -165,7 +165,35 @@ public class RayCastShoot : MonoBehaviour
         Rigidbody grenadeRigidbody = grenadeInstance.GetComponent<Rigidbody>();
         grenadeRigidbody.AddForce(direction * throwForce, ForceMode.Impulse);
         Destroy(grenadeInstance, 6f);
-
-
+    }*/
+        void Grenade(Vector3 apunta)
+    {
+        // Instantiate grenade prefab at current position with appropriate rotation
+        Vector3 where = transform.position;
+        where.y += 1.5f;
+        GameObject grenadeInstance = Instantiate(grenadePrefab, where, Quaternion.identity);
+    
+        // Convert screen position (mouse position) to world position
+        Ray cameraRay = Camera.main.ScreenPointToRay(apunta);
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+        float rayLength;
+    
+        // Check if the ray intersects with the ground plane
+        if (groundPlane.Raycast(cameraRay, out rayLength))
+        {
+            Vector3 pointToHit = cameraRay.GetPoint(rayLength);
+        
+            // Calculate direction towards the target
+            Vector3 direction = (pointToHit - where).normalized;
+        
+            // Access grenade's Rigidbody component and apply force in the calculated direction
+            Rigidbody grenadeRigidbody = grenadeInstance.GetComponent<Rigidbody>();
+            grenadeRigidbody.AddForce(direction * throwForce, ForceMode.Impulse);
+        
+            Debug.Log("Grenade: " + grenadeInstance.transform.position + " Direction: " + direction + " Vector: " + direction * throwForce);
+        
+            Destroy(grenadeInstance, 6f);
+        }
     }
+
 }
