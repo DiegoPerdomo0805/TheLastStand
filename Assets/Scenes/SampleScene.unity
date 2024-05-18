@@ -1085,6 +1085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hatredLikeMaterial: {fileID: 2100000, guid: 25c57e5eb42c48741ba1beb647df1d55, type: 2}
   bloodColor: 0.428
+  darken: 1
 --- !u!1001 &1006921585
 PrefabInstance:
   m_ObjectHideFlags: 0

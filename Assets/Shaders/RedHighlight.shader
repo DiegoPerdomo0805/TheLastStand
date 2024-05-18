@@ -4,6 +4,7 @@ Shader "Custom/RedHighlight"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _RedThreshold ("Red Threshold", Range(0, 1)) = 0
+        _EdgeDarkenAmount ("Edge Darken Amount", Range(0, 1)) = 0.5
     }
     SubShader
     {
@@ -30,6 +31,7 @@ Shader "Custom/RedHighlight"
 
             sampler2D _MainTex;
             float _RedThreshold;
+            float _EdgeDarkenAmount;
 
             v2f vert(appdata v)
             {
@@ -52,6 +54,9 @@ Shader "Custom/RedHighlight"
 
                 // Apply the effect: red objects stay red, everything else becomes grayscale
                 col.rgb = lerp(grayscale, col.rgb, step(_RedThreshold, redness));
+                float edgeFactor = 1.0 - smoothstep(0.0, _EdgeDarkenAmount, length(i.uv - 0.5));
+                
+                col.rgb *= edgeFactor;
                 
 
                 return col;

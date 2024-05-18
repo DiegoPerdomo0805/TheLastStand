@@ -30,6 +30,8 @@ public class Edge : MonoBehaviour
     //[ColorUsage(true, true)]
     [Range(0, 1)]
     public float bloodColor = 0;
+    [Range(0, 1)]
+    public float darken = 1;
     
     
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -37,6 +39,7 @@ public class Edge : MonoBehaviour
         if (hatredLikeMaterial != null)
         {
             hatredLikeMaterial.SetFloat("_RedThreshold", bloodColor);
+            hatredLikeMaterial.SetFloat("_EdgeDarkenAmount", darken);
             Graphics.Blit(source, destination, hatredLikeMaterial);
         }
         else
