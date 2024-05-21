@@ -8,6 +8,11 @@ public class RayCastShoot : MonoBehaviour
     private float maxHealth = 20f;
     public float Health;
 
+    // Foreign scripts and health management and decrease
+    public Edge edgeScript;
+    public MovePlayer movePlayerScript;
+    public float speedReductionFactor = 0.8f;
+    public GameObject mainCamera;
 
     // Apuntar
     public Vector3 Aim;
@@ -44,9 +49,48 @@ public class RayCastShoot : MonoBehaviour
         Magazines = maxMag;
         Health = maxHealth;
 
+        movePlayerScript = GetComponent<MovePlayer>();
+        
+        if(mainCamera != null)
+        {
+            edgeScript = mainCamera.GetComponent<Edge>();
+            if(movePlayerScript == null)
+            {
+                Debug.Log("NO HAY SHADER LA GRAN DIABLA");
+            }
+        }
+        else
+        {
+            Debug.Log("NO HAY CÁMARA LA GRAN DIABLA");
+        }
+        //movePlayerScript = GetComponent<MovePlayer>();
+
         municiones.text = "Balas: " + Ammo;
         cartuchos.text = "Cartuchos: " + Magazines;
         granadas.text = "Granadas: " + Grenades;
+    }
+
+    void TakeDamage(float amount)
+    {
+        Health -= amount;
+        if (Health < 0)
+        {
+            Health = 0;
+        }
+
+        float healthPercentage =  1 - (Health / maxHealth);
+        edgeScript.darken -= (healthPercentage * 0.5f);
+        movePlayerScript.Speed *= speedReductionFactor;
+        movePlayerScript.Speed2 *= speedReductionFactor;
+    }
+
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage(4.0f);
+        }
     }
 
     public Transform RespawnPoint;
