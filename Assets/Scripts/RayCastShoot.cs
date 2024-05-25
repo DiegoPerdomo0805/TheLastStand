@@ -11,6 +11,8 @@ public class RayCastShoot : MonoBehaviour
     // Foreign scripts and health management and decrease
     public Edge edgeScript;
     public MovePlayer movePlayerScript;
+    private float OriginalSpeed;
+    private float OriginalSpeed2;
     public float speedReductionFactor = 0.8f;
     public GameObject mainCamera;
 
@@ -54,7 +56,7 @@ public class RayCastShoot : MonoBehaviour
         if(mainCamera != null)
         {
             edgeScript = mainCamera.GetComponent<Edge>();
-            if(movePlayerScript == null)
+            if(edgeScript == null)
             {
                 Debug.Log("NO HAY SHADER LA GRAN DIABLA");
             }
@@ -64,6 +66,10 @@ public class RayCastShoot : MonoBehaviour
             Debug.Log("NO HAY CÁMARA LA GRAN DIABLA");
         }
         //movePlayerScript = GetComponent<MovePlayer>();
+
+        //Para el Respawn
+        OriginalSpeed = movePlayerScript.Speed;
+        OriginalSpeed2 = movePlayerScript.Speed2;
 
         municiones.text = "Balas: " + Ammo;
         cartuchos.text = "Cartuchos: " + Magazines;
