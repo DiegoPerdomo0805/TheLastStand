@@ -15,6 +15,7 @@ public class RayCastShoot : MonoBehaviour
     private float OriginalSpeed2;
     public float speedReductionFactor = 0.8f;
     public GameObject mainCamera;
+    private float originalEdge;
 
     // Apuntar
     public Vector3 Aim;
@@ -68,8 +69,9 @@ public class RayCastShoot : MonoBehaviour
         //movePlayerScript = GetComponent<MovePlayer>();
 
         //Para el Respawn
-        OriginalSpeed = movePlayerScript.Speed;
+        OriginalSpeed  = movePlayerScript.Speed;
         OriginalSpeed2 = movePlayerScript.Speed2;
+        originalEdge   = edgeScript.darken;
 
         municiones.text = "Balas: " + Ammo;
         cartuchos.text = "Cartuchos: " + Magazines;
@@ -84,8 +86,9 @@ public class RayCastShoot : MonoBehaviour
             Health = 0;
         }
 
-        float healthPercentage =  1 - (Health / maxHealth);
-        edgeScript.darken -= (healthPercentage * 0.5f);
+        float healthPercentage =  (Health / maxHealth);
+        Debug.Log(" - " + healthPercentage);
+        edgeScript.darken -= (healthPercentage * 0.25f);
         movePlayerScript.Speed *= speedReductionFactor;
         movePlayerScript.Speed2 *= speedReductionFactor;
     }
@@ -106,7 +109,12 @@ public class RayCastShoot : MonoBehaviour
         Ammo = MagSize;
         Grenades = GCarry;
         Health = maxHealth;
-        transform.position = RespawnPoint.position;
+        
+        transform.position = new Vector3(RespawnPoint.position.x, transform.position.y, RespawnPoint.position.z);
+
+        movePlayerScript.Speed = OriginalSpeed;
+        movePlayerScript.Speed2 = OriginalSpeed2;
+        edgeScript.darken = originalEdge;
 
         municiones.text = "Balas: " + Ammo;
         cartuchos.text = "Cartuchos: " + Magazines;
@@ -159,7 +167,7 @@ public class RayCastShoot : MonoBehaviour
             granadas.text = "Granadas: " + Grenades;
         }
 
-        if(transform.position.y < -6.0f){
+        if(transform.position.y < -6.0f || Health == 0){
             Respawn();
         }
     }
