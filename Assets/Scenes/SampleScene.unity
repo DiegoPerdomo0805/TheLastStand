@@ -3110,7 +3110,7 @@ Transform:
   m_GameObject: {fileID: 915400203}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.03, y: 0.5602264, z: -6.42}
+  m_LocalPosition: {x: 1.03, y: 0.5602264, z: 4.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4604,7 +4604,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f824cef50f8b0a846bfb2396af1b9dad, type: 2}
+  - {fileID: 2100000, guid: 83400acfc8acd5c4ea7079e2f96bfc9a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4878,11 +4878,11 @@ MonoBehaviour:
   m_GenerateLinks: 0
   m_IgnoreNavMeshAgent: 1
   m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
+  m_OverrideTileSize: 1
+  m_TileSize: 1024
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
-  m_MinRegionArea: 2
+  m_MinRegionArea: 4
   m_NavMeshData: {fileID: 23800000, guid: 0aab8a758c5e105498ff710622f242bb, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1001 &1339259178
