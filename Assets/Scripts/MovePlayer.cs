@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class MovePlayer : MonoBehaviour
 {
-    public float Speed = 15f;
-    public float Speed2 = 30f;
+    public float Speed = 10f;
+    public float Speed2 = 20f;
     private Rigidbody rb;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true; // Ensure the player does not rotate unexpectedly
     }
 
     // Update is called once per frame
@@ -21,13 +23,16 @@ public class MovePlayer : MonoBehaviour
 
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
 
-        
-        if(Input.GetKey(KeyCode.Space)){
-            Debug.Log(" Running");
-            rb.AddForce(movement * Speed2);
+        // Determine speed based on whether the space key is pressed
+        float currentSpeed = Input.GetKey(KeyCode.Space) ? Speed2 : Speed;
+
+        // Apply movement
+        rb.velocity = movement * currentSpeed;
+
+        // If no input, set velocity to zero for immediate stop
+        if (movement == Vector3.zero)
+        {
+            rb.velocity = Vector3.zero;
         }
-        else{
-            rb.AddForce(movement * Speed);
-        }    
     }
 }
