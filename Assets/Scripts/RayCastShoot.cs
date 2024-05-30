@@ -43,6 +43,13 @@ public class RayCastShoot : MonoBehaviour
     public TMPro.TextMeshProUGUI cartuchos;
     public TMPro.TextMeshProUGUI granadas;
 
+
+    // Audio
+    public AudioClip BangBang;
+    public AudioClip Reload;
+    public AudioClip EmptyMag;
+    private AudioSource aSource;
+
     void Start () 
     {
         shootTimer = 0;
@@ -76,6 +83,8 @@ public class RayCastShoot : MonoBehaviour
         municiones.text = "Balas: " + Ammo;
         cartuchos.text = "Cartuchos: " + Magazines;
         granadas.text = "Granadas: " + Grenades;
+
+        aSource = GetComponent<AudioSource>();
     }
 
     void TakeDamage(float amount)
@@ -162,15 +171,24 @@ public class RayCastShoot : MonoBehaviour
 
 
         // Disparar
-        if (Input.GetButtonDown("Fire1") && shootTimer == 0 && Ammo > 0){
-            Shoot(Aim);
-            shootTimer = shootCooldown;
-            Ammo--;
-            municiones.text = "Balas: " + Ammo;
+        if (Input.GetButtonDown("Fire1") && shootTimer == 0){
+            if (Ammo > 0)
+            {
+                aSource.PlayOneShot(BangBang);
+                Shoot(Aim);
+                shootTimer = shootCooldown;
+                Ammo--;
+                municiones.text = "Balas: " + Ammo;
+            }
+            else
+            {
+                aSource.PlayOneShot(EmptyMag);
+            }
         }
         
         // Recargar 
         if(Input.GetKeyDown(KeyCode.R) && Magazines > 0){
+            aSource.PlayOneShot(Reload);
             Ammo = MagSize;
             Magazines--;
             municiones.text = "Balas: " + Ammo;
