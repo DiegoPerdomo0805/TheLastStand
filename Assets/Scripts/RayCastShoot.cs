@@ -9,8 +9,8 @@ public class RayCastShoot : MonoBehaviour
     public float Health;
 
     // Foreign scripts and health management and decrease
-    public Edge edgeScript;
-    public MovePlayer movePlayerScript;
+    private Edge edgeScript;
+    private MovePlayer movePlayerScript;
     private float OriginalSpeed;
     private float OriginalSpeed2;
     public float speedReductionFactor = 0.8f;
@@ -86,9 +86,9 @@ public class RayCastShoot : MonoBehaviour
             Health = 0;
         }
 
-        float healthPercentage =  (Health / maxHealth);
+        float healthPercentage =  (amount / maxHealth);
         Debug.Log(" - " + healthPercentage);
-        edgeScript.darken -= (healthPercentage * 0.25f);
+        edgeScript.darken -= (healthPercentage * 0.5f);
         movePlayerScript.Speed *= speedReductionFactor;
         movePlayerScript.Speed2 *= speedReductionFactor;
     }
@@ -98,19 +98,37 @@ public class RayCastShoot : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            TakeDamage(4.0f);
+            TakeDamage(maxHealth / 5);
         }
     }
 
     public Transform RespawnPoint;
+    public GameObject safeZone;
 
     void Respawn(){
         Magazines = maxMag;
         Ammo = MagSize;
         Grenades = GCarry;
         Health = maxHealth;
-        
-        transform.position = new Vector3(RespawnPoint.position.x, transform.position.y, RespawnPoint.position.z);
+
+        System.Random random= new System.Random();
+
+        float XSize = safeZone.GetComponent<BoxCollider>().bounds.size.x;
+        float ZSize = safeZone.GetComponent<BoxCollider>().bounds.size.z;
+
+        //Debug.Log($" - {XSize}, {ZSize}");
+
+        int r = random.Next(1, 20); //D20 RULES!!!!!
+        if (r < 11)
+        {
+            transform.position = new Vector3(RespawnPoint.position.x + XSize/2 + 1, transform.position.y, RespawnPoint.position.z);
+        }
+        else
+        {
+            transform.position = new Vector3(RespawnPoint.position.x, transform.position.y, RespawnPoint.position.z + ZSize/2 + 1);
+        }
+
+        //transform.position = new Vector3(RespawnPoint.position.x, transform.position.y, RespawnPoint.position.z);
 
         movePlayerScript.Speed = OriginalSpeed;
         movePlayerScript.Speed2 = OriginalSpeed2;
