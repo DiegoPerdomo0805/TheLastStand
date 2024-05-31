@@ -82,5 +82,10 @@ public class HuntPlayer : MonoBehaviour
         MoveToTerritory();
     }
 
+    public void TakeDamage(float damage)
+    {
+        Debug.Log(" - Vampire hit! " + damage);
+    }
+
 
 }

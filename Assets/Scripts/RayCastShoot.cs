@@ -208,14 +208,22 @@ public class RayCastShoot : MonoBehaviour
         }
     }
 
+
     void Shoot(Vector3 apunta)
     {
         Ray fire = Camera.main.ScreenPointToRay(apunta);
         RaycastHit hit;
 
         if(Physics.Raycast(fire, out hit)){
-            Debug.Log("Bang " + hit.transform.name);
+            //Debug.Log("Bang " + hit.transform.name);
             //SeeBullet(fire.origin, hit.point);
+
+            HuntPlayer v = hit.transform.GetComponent<HuntPlayer>();
+            if(v != null)
+            {
+                v.TakeDamage(10f);
+            }
+
             SeeBullet(transform.position, hit.point);
         }
         else{
