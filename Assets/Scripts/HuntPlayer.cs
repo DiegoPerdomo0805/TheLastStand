@@ -8,7 +8,7 @@ public class HuntPlayer : MonoBehaviour
     public Transform player;
     public Transform safeZone;
     private NavMeshAgent agent;
-    private float pursuitRange = 5f;
+    private float pursuitRange = 8f;
 
     private float StalkingSpeed = 5f;
     private float HuntingSpeed = 10f;
@@ -22,6 +22,7 @@ public class HuntPlayer : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.speed = StalkingSpeed;
         CurrentState = State.MovingToTerritory;
+        Health = maxHealth;
     }
 
     // Update is called once per frame
@@ -85,7 +86,8 @@ public class HuntPlayer : MonoBehaviour
         MoveToTerritory();
     }
 
-    private float Health = 40f;
+    private float Health;
+    public float maxHealth  = 40f;
 
     public void TakeDamage(float damage)
     {

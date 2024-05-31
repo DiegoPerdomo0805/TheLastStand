@@ -98,8 +98,8 @@ public class RayCastShoot : MonoBehaviour
         float healthPercentage =  (amount / maxHealth);
         Debug.Log(" - " + healthPercentage);
         edgeScript.darken -= (healthPercentage * 0.5f);
-        movePlayerScript.Speed *= speedReductionFactor;
-        movePlayerScript.Speed2 *= speedReductionFactor;
+        //movePlayerScript.Speed *= speedReductionFactor;
+        //movePlayerScript.Speed2 *= speedReductionFactor;
     }
 
 
@@ -229,7 +229,15 @@ public class RayCastShoot : MonoBehaviour
             HuntPlayer v = hit.transform.GetComponent<HuntPlayer>();
             if(v != null && hit.transform.tag != "Dead")
             {
-                v.TakeDamage(10f);
+                float damage = 10f;
+                v.TakeDamage(damage);
+
+                Vector3 knockbackDirection = hit.transform.position - transform.position;
+                knockbackDirection.y = 0; // Keep knockback horizontal
+                knockbackDirection.Normalize();
+
+                float knockbackForce = (damage / v.maxHealth) * 100; // Adjust the multiplier as needed
+                v.GetComponent<Rigidbody>().AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
             }
 
             SeeBullet(transform.position, hit.point);
