@@ -5,7 +5,7 @@ using UnityEngine;
 public class RayCastShoot : MonoBehaviour
 {
     // Health
-    private float maxHealth = 20f;
+    public float maxHealth = 20f;
     public float Health;
 
     // Foreign scripts and health management and decrease
@@ -25,8 +25,8 @@ public class RayCastShoot : MonoBehaviour
     private float shootTimer;
     public int Ammo;
     public int Magazines; // Cantidad de cartuchos, sujeto a balanceo
-    public int MagSize = 25; // Cartucho para una PPD-34
-    public int maxMag = 4; // Máxima cantidad de cartuchos 
+    public int MagSize = 8; // Cartucho para una PPD-34
+    public int maxMag = 6; // Máxima cantidad de cartuchos 
     public GameObject bulletPrefab;
 
     // Variables de granadas y explosivos
@@ -48,6 +48,7 @@ public class RayCastShoot : MonoBehaviour
     public AudioClip BangBang;
     public AudioClip Reload;
     public AudioClip EmptyMag;
+    public AudioClip ambiente;
     private AudioSource aSource;
 
     void Start () 
@@ -121,8 +122,16 @@ public class RayCastShoot : MonoBehaviour
 
     public Transform RespawnPoint;
     public GameObject safeZone;
+    public GameObject vPrefab;
+
+    void SpawnVampire()
+    {
+        GameObject newV = Instantiate(vPrefab, transform.position, Quaternion.identity);
+        newV.SetActive(true);
+    }
 
     void Respawn(){
+        SpawnVampire();
         Magazines = maxMag;
         Ammo = MagSize;
         Grenades = GCarry;

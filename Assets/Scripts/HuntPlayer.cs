@@ -6,12 +6,20 @@ using UnityEngine.AI;
 public class HuntPlayer : MonoBehaviour
 {
     public Transform player;
+    public GameObject hunt;
+    private RayCastShoot Bloodbag;
     public Transform safeZone;
     private NavMeshAgent agent;
-    private float pursuitRange = 8f;
 
+    // Variables
+    private float pursuitRange;
     private float StalkingSpeed = 5f;
-    private float HuntingSpeed = 10f;
+    private float HuntingSpeed;
+
+    // Constantes
+    public float ConstantPursuitRange = 7f;
+    public float ConstantHuntingSpeed = 10f;
+
 
     private enum State { MovingToTerritory, PursuingPlayer, Dead};
     private State CurrentState = State.MovingToTerritory;
@@ -23,6 +31,9 @@ public class HuntPlayer : MonoBehaviour
         agent.speed = StalkingSpeed;
         CurrentState = State.MovingToTerritory;
         Health = maxHealth;
+        Bloodbag = hunt.GetComponent<RayCastShoot>();
+        pursuitRange = ConstantPursuitRange;
+        HuntingSpeed = ConstantHuntingSpeed;
     }
 
     // Update is called once per frame
@@ -31,6 +42,7 @@ public class HuntPlayer : MonoBehaviour
         if(CurrentState != State.Dead)
         {
             float distance = Vector3.Distance(transform.position, player.position);
+            
             switch (CurrentState)
             {
                 case State.MovingToTerritory:
@@ -77,6 +89,22 @@ public class HuntPlayer : MonoBehaviour
         {
             agent.SetDestination(player.position);
         }
+        if (Bloodbag.Health / Bloodbag.maxHealth > 0.67)
+            {
+                pursuitRange = ConstantPursuitRange;
+                HuntingSpeed = ConstantHuntingSpeed;
+            }
+            else if (Bloodbag.Health / Bloodbag.maxHealth > 0.33)
+            {
+
+                pursuitRange = ConstantPursuitRange * 1.1f;
+                HuntingSpeed = ConstantHuntingSpeed * 1.1f;
+            }
+            else
+            {
+                pursuitRange = ConstantPursuitRange * 1.1f * 1.2f;
+                HuntingSpeed = ConstantHuntingSpeed * 1.1f * 1.2f;
+            }
     }
 
     void StopPursuingPlayer()

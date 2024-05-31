@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class SafeZoneHealth : MonoBehaviour
@@ -9,6 +10,17 @@ public class SafeZoneHealth : MonoBehaviour
     public float Timer = 120f;
     public bool alive = true;
     public bool EndGame = false;
+
+    // UI
+    public int minutes;
+    public int seconds;
+    public int percentage;
+    private float temp;
+    public TMPro.TextMeshProUGUI min;
+    public TMPro.TextMeshProUGUI seg;
+    public TMPro.TextMeshProUGUI p;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -49,6 +61,14 @@ public class SafeZoneHealth : MonoBehaviour
             else
             {
                 Timer -= Time.deltaTime;
+                minutes = (int)Timer/60;
+                seconds = (int) Timer % 60;
+                min.text = minutes.ToString();
+                seg.text = seconds.ToString();       
+                temp = Health/MaxHealth;
+                temp = temp * 100;
+                percentage = (int) temp;
+                p.text = percentage.ToString();
                 if (Timer <= 0)
                 {
                     Timer = 0;
