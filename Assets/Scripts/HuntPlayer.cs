@@ -13,12 +13,12 @@ public class HuntPlayer : MonoBehaviour
 
     // Variables
     private float pursuitRange;
-    private float StalkingSpeed = 5f;
+    public float StalkingSpeed = 6f;
     private float HuntingSpeed;
 
     // Constantes
     public float ConstantPursuitRange = 7f;
-    public float ConstantHuntingSpeed = 10f;
+    public float ConstantHuntingSpeed = 12f;
 
 
     private enum State { MovingToTerritory, PursuingPlayer, Dead};

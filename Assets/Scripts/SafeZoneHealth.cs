@@ -14,6 +14,7 @@ public class SafeZoneHealth : MonoBehaviour
     // UI
     public int minutes;
     public int seconds;
+    public string charSeconds;
     public int percentage;
     private float temp;
     public TMPro.TextMeshProUGUI min;
@@ -63,8 +64,9 @@ public class SafeZoneHealth : MonoBehaviour
                 Timer -= Time.deltaTime;
                 minutes = (int)Timer/60;
                 seconds = (int) Timer % 60;
+                charSeconds = seconds > 9? seconds.ToString(): "0" + seconds.ToString();
                 min.text = minutes.ToString();
-                seg.text = seconds.ToString();       
+                seg.text = charSeconds;       
                 temp = Health/MaxHealth;
                 temp = temp * 100;
                 percentage = (int) temp;
