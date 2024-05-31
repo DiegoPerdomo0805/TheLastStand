@@ -111,6 +111,14 @@ public class RayCastShoot : MonoBehaviour
         }
     }
 
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage(maxHealth / 10 * Time.deltaTime); // Damage over time while in contact
+        }
+    }
+
     public Transform RespawnPoint;
     public GameObject safeZone;
 
@@ -219,7 +227,7 @@ public class RayCastShoot : MonoBehaviour
             //SeeBullet(fire.origin, hit.point);
 
             HuntPlayer v = hit.transform.GetComponent<HuntPlayer>();
-            if(v != null)
+            if(v != null && hit.transform.tag != "Dead")
             {
                 v.TakeDamage(10f);
             }

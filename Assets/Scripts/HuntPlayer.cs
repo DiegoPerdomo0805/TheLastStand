@@ -10,10 +10,10 @@ public class HuntPlayer : MonoBehaviour
     private NavMeshAgent agent;
     private float pursuitRange = 5f;
 
-    private float StalkingSpeed = 7.5f;
-    private float HuntingSpeed = 17.5f;
+    private float StalkingSpeed = 5f;
+    private float HuntingSpeed = 10f;
 
-    private enum State { MovingToTerritory, PursuingPlayer};
+    private enum State { MovingToTerritory, PursuingPlayer, Dead};
     private State CurrentState = State.MovingToTerritory;
 
     // Start is called before the first frame update
@@ -27,28 +27,31 @@ public class HuntPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float distance = Vector3.Distance(transform.position, player.position);
-        switch (CurrentState)
+        if(CurrentState != State.Dead)
         {
-            case State.MovingToTerritory:
-                MoveToTerritory();
-                if (distance <= pursuitRange)
-                {
-                    //Debug.Log(" - Estamos cerca");
-                    //CurrentState = State.PursuingPlayer;
-                    StartPursuingPlayer();
-                }
-                break;
-            
-            case State.PursuingPlayer:
-                PursuePlayer();
-                if (distance > pursuitRange)
-                {
-                    //Debug.Log(" - Estamos lejos");
-                    //CurrentState = State.MovingToTerritory;
-                    StopPursuingPlayer();
-                }
-                break;
+            float distance = Vector3.Distance(transform.position, player.position);
+            switch (CurrentState)
+            {
+                case State.MovingToTerritory:
+                    MoveToTerritory();
+                    if (distance <= pursuitRange)
+                    {
+                        //Debug.Log(" - Estamos cerca");
+                        //CurrentState = State.PursuingPlayer;
+                        StartPursuingPlayer();
+                    }
+                    break;
+                
+                case State.PursuingPlayer:
+                    PursuePlayer();
+                    if (distance > pursuitRange)
+                    {
+                        //Debug.Log(" - Estamos lejos");
+                        //CurrentState = State.MovingToTerritory;
+                        StopPursuingPlayer();
+                    }
+                    break;
+            }
         }
     }
 
@@ -82,9 +85,20 @@ public class HuntPlayer : MonoBehaviour
         MoveToTerritory();
     }
 
+    private float Health = 40f;
+
     public void TakeDamage(float damage)
     {
-        Debug.Log(" - Vampire hit! " + damage);
+        //Debug.Log(" - Vampire hit! " + damage);
+        Health -= damage;
+        if (Health <= 0) Die();
+    }
+
+    public void Die()
+    {
+        CurrentState = State.Dead;
+        agent.isStopped = true;
+        gameObject.tag = "Dead";
     }
 
 

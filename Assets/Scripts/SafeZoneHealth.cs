@@ -28,7 +28,15 @@ public class SafeZoneHealth : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            TakeDamage(4.0f);
+            TakeDamage(MaxHealth / 25);
+        }
+    }
+
+        void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage(MaxHealth / 50 * Time.deltaTime); // Damage over time while in contact
         }
     }
 
