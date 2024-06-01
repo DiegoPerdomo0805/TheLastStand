@@ -22,12 +22,21 @@ public class SafeZoneHealth : MonoBehaviour
     public TMPro.TextMeshProUGUI p;
 
 
+    // Screens
+    public GameObject winCanvas;
+    public GameObject loseCanvas;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         Health = MaxHealth;      
+        if (winCanvas != null) winCanvas.SetActive(false);
+        if (loseCanvas != null) loseCanvas.SetActive(false);
     }
+
+
     void TakeDamage(float amount)
     {
         Health -= amount;
@@ -88,10 +97,13 @@ public class SafeZoneHealth : MonoBehaviour
     void YouWin()
     {
         Debug.Log(" - You win!");
+        if (winCanvas != null) winCanvas.SetActive(true);
     }
 
     void YouLose()
     {
         Debug.Log(" - You Lose! ");
+        if (loseCanvas != null) loseCanvas.SetActive(true);
+
     }
 }

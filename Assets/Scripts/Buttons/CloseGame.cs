@@ -1,18 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CloseGame : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Button buttonStart;
+    public Button buttonFinish;
+    private string juego = "SampleScene";
+
     void Start()
     {
-        
+        // Ensure buttonStart is assigned
+        if (buttonStart != null)
+        {
+            buttonStart.onClick.AddListener(OnStartButtonClicked);
+        }
+        else
+        {
+            Debug.LogError("buttonStart is not assigned.");
+        }
+
+        if (buttonFinish != null)
+        {
+            buttonFinish.onClick.AddListener(OnFinishButtonClicked);
+        }
+        else
+        {
+            Debug.LogError("buttonFinish is not assigned.");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnStartButtonClicked()
     {
-        
+        Debug.Log(" Empecemos.");
+        SceneManager.LoadScene(juego, LoadSceneMode.Single);
     }
+
+    void OnFinishButtonClicked()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
+
 }
